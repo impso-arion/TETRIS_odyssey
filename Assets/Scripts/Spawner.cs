@@ -8,48 +8,35 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     //配列の作成
-
-
-
-    [SerializeField]
-    //Tetrimino[] Minos;//(生成するミノ内ブロックのすべてを格納する)
-    public List<GameObject> Minos;
+    [SerializeField] List<Tetrimino> Minos;//ミノリストの中にミノを格納する。インスペクターで。
     private List<int> tetriminoIndexes; // ランダムな順序のミノのインデックスを保持するリスト
     private int currentTetriminoIndex; // 現在のミノのインデックス
-    private List<GameObject> nextQueue; // 次に生成するミノのキュー
 
-    private bool IsView;//Update表示するかどうか
+    private int? next1 = null, next2 = null, next3 = null;//ネクストに格納される値 NullableIntである
+
+
+    //関数の作成
+    //次のテトリミノインデックスを作成
+
+
+
+
+    
     void Start()
     {
+        //インデックス生成
         InitializeTetriminoIndexes();
-        currentTetriminoIndex = 0;
-        nextQueue = new List<GameObject>();
-        IsView = false;
+        next1 = tetriminoIndexes[0];
+        next2 = tetriminoIndexes[1];
+        next3 = tetriminoIndexes[2];
+        currentTetriminoIndex = 3;
+        Debug.Log("next1:" + next1 + "next1:" + next1 + "next1:" + next1);
     }
     private void Update()
     {
         //next1,next2,next3を表示。存在しなければ生成
         //まず生成
-        if(nextQueue.Count < 2)//カウントが3以下なら
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                nextQueue.Add(SpawnNextTetrimino());
-            }
-            IsView = true;
-        }
-        if (IsView)
-        {
-            Vector3 spawnOffset1 = new Vector3(6.5f, -5f, 0f);//next1の位置へオフセット
-            Vector3 spawnOffset2 = new Vector3(6.5f, -10f, 0f);//next2の位置へオフセット
-            Vector3 spawnOffset3 = new Vector3(6.5f, -15f, 0f);//next3の位置へオフセット
-            //画面に表示
-            Instantiate(nextQueue[0], transform.position + spawnOffset1, Quaternion.identity);
-            Instantiate(nextQueue[1], transform.position + spawnOffset2, Quaternion.identity);
-            Instantiate(nextQueue[2], transform.position + spawnOffset3, Quaternion.identity);
-            IsView = false;
-        }
-        
+                
 
         //SpawnNextTetrimino();
     }
@@ -81,12 +68,12 @@ public class Spawner : MonoBehaviour
     /// 新ミノ生成
     /// </summary>
     /// <returns>生成ミノを返す</returns>
-    private GameObject SpawnNextTetrimino()
+    private Tetrimino SpawnNextTetrimino()
     {
         // 現在のミノを生成
         int nextIndex = tetriminoIndexes[currentTetriminoIndex];
-        GameObject nextTetrimino = Minos[nextIndex];
-        Debug.Log(nextIndex);
+        Tetrimino nextTetrimino = Minos[nextIndex];
+        //Debug.Log(nextIndex);
         // ミノ生成後、次のミノのためにインデックスを更新
         currentTetriminoIndex = (currentTetriminoIndex + 1) % Minos.Count;
         if(currentTetriminoIndex == 0)
@@ -100,18 +87,25 @@ public class Spawner : MonoBehaviour
     /// キューのミノを渡す
     /// </summary>
     /// <returns></returns>
-    public GameObject getActiveMino()
+    /*
+    public Tetrimino getActiveMino()
     {
         Debug.Log("はいりました");
         if (nextQueue != null && nextQueue.Count > 0)
         {
+
             // nextQueue[0] を取り出してリストから削除
-            GameObject nextTetrimino = nextQueue[0];
+            Tetrimino nextTetrimino = nextQueue[0];
             nextQueue.RemoveAt(0);
+            Debug.Log("キューは" + nextQueue.Count);
             // 外部に渡したオブジェクトをSpawnerの位置に移動
-            nextTetrimino.transform.position = transform.position;
+            //nextTetrimino.transform.position = transform.position;
+            nextTetrimino.transform.position = Vector3.zero;
+
             // 外部に渡したオブジェクトを返す
             //IsView = true;
+            Debug.Log("nextTetrimino: " + nextTetrimino);
+            Debug.Log("nextTetrimino position: " + nextTetrimino.transform.position);
             Debug.Log("よい");
             return nextTetrimino;
             
@@ -122,6 +116,7 @@ public class Spawner : MonoBehaviour
             return null;
         }
     }
+    */
 
 
 

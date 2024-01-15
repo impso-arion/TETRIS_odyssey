@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     Spawner spawner;
 
     //¶¬‚³‚ê‚½ƒ~ƒm‚ğŠi”[
-    GameObject activeMino;
+    Tetrimino activeMino;
 
 
 
@@ -22,15 +22,19 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         //spawnerƒNƒ‰ƒX‚©‚çƒuƒƒbƒN¶¬ŠÖ”‚ğŒÄ‚ñ‚Å•Ï”‚ÉŠi”[
+        /*
         if (!activeMino)//‹ó‚Ì‚Æ‚«
         {
-            if (spawner != null)
+
+            activeMino = spawner.getActiveMino();
+            if(activeMino != null )
             {
-                activeMino = spawner.getActiveMino();
+                Debug.Log("null‚â‚È‚¢‚Å‚¦");
+                activeMino.transform.position = Vector3.zero;
             }
-            
 
         }
+        */
     }
 
 
