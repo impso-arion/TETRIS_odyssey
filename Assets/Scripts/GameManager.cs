@@ -24,18 +24,22 @@ public class GameManager : MonoBehaviour
         
         spawner = GameObject.FindObjectOfType<Spawner>();//スポナーというコンポーネントをついているオブジェクトを探す
         board = GameObject.FindObjectOfType<Board>();//ボードを変数に格納
+
+        if (!activeMino)//空のとき
+        {
+            activeMino = spawner.getNext1Mino();
+            //activeMino.transform.position = new Vector3(4.5f, 25f, -1f);
+        }
     }
     private void Update()
     {
         //spawnerクラスからブロック生成関数を呼んで変数に格納
-
         if (!activeMino)//空のとき
         {
-
-            activeMino = spawner.getSpawnMino();
-
-
+            activeMino = spawner.getNext1Mino();
+            activeMino.transform.position = new Vector3(4.5f, 25f, -1f);
         }
+
         //Updateで時間の判定をして、判定しだいで落下関数を呼ぶ
         if (Time.time > nextdropTimer)
         {
@@ -52,7 +56,8 @@ public class GameManager : MonoBehaviour
                     activeMino.MoveUp();
                     //少し待つ
                     //新しいものが出てくる
-                    activeMino = spawner.getSpawnMino() ;
+                    activeMino = spawner.getNext1Mino() ;
+                    activeMino.transform.position = new Vector3(4.5f, 25f, -1f);
                 }
 
             }

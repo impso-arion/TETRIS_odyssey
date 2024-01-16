@@ -13,35 +13,43 @@ public class Spawner : MonoBehaviour
     [SerializeField] Tetrimino[] tetriminos;//ミノリストの中にミノを格納する。インスペクターで登録します
 
     private List<int> tetriminoIndexes; // ランダムな順序のミノのインデックスを保持するリスト
-    private int currentTetriminoIndex; // 現在のミノのインデックス
-
-    //private int? next1 = null, next2 = null, next3 = null;//ネクストに格納される値 NullableIntである
-
-
+    private int currentTetriminoIndex = 0; // 現在のミノのインデックス
+    Tetrimino next1, next2, next3;//ネクストのミノ
+    //ネクストの場所
+    private Vector3 next1pos = new Vector3(12, 20, 0);
+    private Vector3 next2pos = new Vector3(12, 15, 0);
+    private Vector3 next3pos = new Vector3(12, 10, 0);
     //関数の作成
     //次のテトリミノインデックスを作成
 
+    void Awake()
+    {
+        //初期インデックス
+        InitializeTetriminoIndexes();
+    }
 
-    
+
     void Start()
     {
-        //インデックス生成
-        InitializeTetriminoIndexes();
-        //next1 = tetriminoIndexes[0];
-        //next2 = tetriminoIndexes[1];
-        //next3 = tetriminoIndexes[2];
-        currentTetriminoIndex = 3;
-        //Debug.Log("next1:" + next1 + "next1:" + next1 + "next1:" + next1);
+        next1 = getSpawnMino();
+        next1.transform.position = next1pos;
+        next2 = getSpawnMino();
+        next2.transform.position = next2pos;
+        next3 = getSpawnMino();
+        next3.transform.position = next3pos;
     }
     private void Update()
     {
-        //next1,next2,next3を表示。存在しなければ生成
-        //まず生成
-                
-
-        //SpawnNextTetrimino();
+        if(next1 == null)
+        {
+            next1 = next2;
+            next1.transform.position = next1pos;
+            next2 = next3;
+            next2.transform.position = next2pos;
+            next3 = getSpawnMino();
+            next3.transform.position = next3pos;
+        }
     }
-
     /// <summary>
     /// 初期化
     /// </summary>
@@ -64,19 +72,18 @@ public class Spawner : MonoBehaviour
         System.Random rng = new System.Random();
         tetriminoIndexes = tetriminoIndexes.OrderBy(x => rng.Next()).ToList();
     }
-
     /// <summary>
     /// 新ミノ生成
     /// </summary>
     /// <returns>生成ミノを返す</returns>
-    Tetrimino GetNextTetrimino()
+    Tetrimino spawnNextTetrimino()
     {
         // 現在のミノを生成
         int nextIndex = tetriminoIndexes[currentTetriminoIndex];
         Tetrimino nextTetrimino = tetriminos[nextIndex];
         //Debug.Log(nextIndex);
         // ミノ生成後、次のミノのためにインデックスを更新
-        currentTetriminoIndex = (currentTetriminoIndex + 1) % tetriminos.Length;
+        currentTetriminoIndex = (currentTetriminoIndex + 1) % 7;//7種1順である
         if(currentTetriminoIndex == 0)
         {
             ShuffleIndexes();
@@ -90,17 +97,14 @@ public class Spawner : MonoBehaviour
             return null;
         }
     }
-
-
-
     /// <summary>
     /// ミノを渡す
     /// </summary>
     /// <returns></returns>
-    public Tetrimino getSpawnMino()
+    Tetrimino getSpawnMino()
     {
         //ミノを生成
-        Tetrimino tetrimino = Instantiate(GetNextTetrimino(),transform.position,
+        Tetrimino tetrimino = Instantiate(spawnNextTetrimino(),transform.position,
             Quaternion.identity);
         if (tetrimino)
         {
@@ -110,11 +114,19 @@ public class Spawner : MonoBehaviour
         {
             return null;
         }
-
     }
-    
-
-
-
+    public Tetrimino getNext1Mino()
+    {
+        if (next1)
+        {
+            Tetrimino nextMino = next1;
+            next1 = null;
+            return nextMino;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }
 
