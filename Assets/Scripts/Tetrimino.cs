@@ -5,13 +5,16 @@ using UnityEngine;
 public class Tetrimino : MonoBehaviour
 {
 
-    //変数作成
+    
     //回転していいブロックかどうか
     [SerializeField] private bool canRotate = true;
     public int direction = 0;
     //方角　0 = 北,1=東,2＝南, 3=西
 
-    //関数作成
+
+    
+
+
     //移動用
     void Move(Vector3 moveDirection)//動く方向をもらう
     {

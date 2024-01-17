@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,10 +20,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float dropInterval = 0.25f;
     float nextdropTimer;
 
-    //着地からの制限時間を考えるならばこれ。
-    //public float landingTime = 1.5f; // ミノが着地してからの制限時間
-    //private bool landed = false;
-    //private float landingTimer = 0f;
+    //クラシックロックダウンシステムを採用する
+    //ミノが下に落ちると、ロックダウンタイマーがリセットされる
+    //ミノが同じ高さに0.5秒以上いると、ロックダウンされる。
+    private float lockDownInterval = 0.5f; // ミノが着地してからのタイマー
+    private float lockDownTime;
+
+
 
     [SerializeField]
     private GameObject gameOverPanel;
@@ -36,6 +40,10 @@ public class GameManager : MonoBehaviour
         spawner = GameObject.FindObjectOfType<Spawner>();//スポナーというコンポーネントをついているオブジェクトを探す
         board = GameObject.FindObjectOfType<Board>();//ボードを変数に格納
         spawner.transform.position = Rounding.Round(spawner.transform.position);
+
+        //ロックダウンタイマー初期設定
+        lockDownTime = Time.time + lockDownInterval;
+
         //パネル非表示
         if (gameOverPanel.activeInHierarchy)
         {
@@ -54,6 +62,12 @@ public class GameManager : MonoBehaviour
             activeMino = spawner.getNext1Mino();
             activeMino.transform.position = spawner.transform.position;
         }
+        //activeMinoの時間をチェックする関数
+        //activeMinoのyをチェックして、数値が下がれば時間をリセットする
+        //リセットされず0.5秒すぎたらロックダウン可
+
+
+
         //PlayerInput();
         if ((Time.time > nextdropTimer))//ボタン連打でなく、時間経過で落ちるようにしたい。
         {
@@ -71,10 +85,10 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
+                //ロックダウンタイマー
                 //底についたときの処理
                 BottomBoard();
                 }
-
             }
         }
     }
