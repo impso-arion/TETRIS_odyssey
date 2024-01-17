@@ -8,7 +8,9 @@ public class Tetrimino : MonoBehaviour
     //•Ï”ì¬
     //‰ñ“]‚µ‚Ä‚¢‚¢ƒuƒƒbƒN‚©‚Ç‚¤‚©
     [SerializeField] private bool canRotate = true;
-    
+    public int direction = 0;
+    //•ûŠp@0 = –k,1=“Œ,2“ì, 3=¼
+
     //ŠÖ”ì¬
     //ˆÚ“®—p
     void Move(Vector3 moveDirection)//“®‚­•ûŒü‚ğ‚à‚ç‚¤
@@ -36,6 +38,7 @@ public class Tetrimino : MonoBehaviour
     //‰ñ“]—p(2í—Ş)
     public void RotateRight()
     {
+        //ƒ~ƒm‚Ìí—Ş‚¾‚¯‰ñ“]‚Ìí—Ş‚ª‚ ‚é
         if (canRotate)
         {
             transform.Rotate(0, 0, -90);

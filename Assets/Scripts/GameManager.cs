@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    //変数の作成
+
     //Spawner
     Spawner spawner;
 
@@ -23,6 +24,11 @@ public class GameManager : MonoBehaviour
     //private bool landed = false;
     //private float landingTimer = 0f;
 
+    [SerializeField]
+    private GameObject gameOverPanel;
+
+    //ゲームオーバー判定
+    bool gameOver;
 
     private void Start()
     {
@@ -30,10 +36,18 @@ public class GameManager : MonoBehaviour
         spawner = GameObject.FindObjectOfType<Spawner>();//スポナーというコンポーネントをついているオブジェクトを探す
         board = GameObject.FindObjectOfType<Board>();//ボードを変数に格納
         spawner.transform.position = Rounding.Round(spawner.transform.position);
-
+        //パネル非表示
+        if (gameOverPanel.activeInHierarchy)
+        {
+            gameOverPanel.SetActive(false);
+        }
     }
     private void Update()
     {
+        if (gameOver)
+        {
+            return;
+        }
         //spawnerクラスからブロック生成関数を呼んで変数に格納
         if (!activeMino)//空のとき
         {
@@ -50,16 +64,16 @@ public class GameManager : MonoBehaviour
             if (!board.CheckPosition(activeMino))
             {
                 //固定されたときにオーバーリミットしたかどうかチェックする
-                //if (board.OverLimit(activeMino))
-                //{
+                if (board.OverLimit(activeMino))
+                {
                 //ゲームーバーにする
-                //    GameOver();
-                //}
-                //else
-                //{
+                    GameOver();
+                }
+                else
+                {
                 //底についたときの処理
                 BottomBoard();
-                //}
+                }
 
             }
         }
@@ -89,19 +103,29 @@ public class GameManager : MonoBehaviour
     public void RotateRightActiveMino()
     {
         activeMino.RotateRight();
+        // directionを0から3の範囲でリピート
+        activeMino.direction = (activeMino.direction + 1) % 4;
         //回転に失敗したら逆回転させましょう
         if (!board.CheckPosition(activeMino))
         {
             activeMino.RotateLeft();
+            activeMino.direction -= 1;
         }
     }
     public void RotateLeftActiveMino()
     {
         activeMino.RotateLeft();
+        // directionを0から3の範囲でリピート
+        activeMino.direction = (activeMino.direction - 1) % 4;
+        if (activeMino.direction < 0)
+        {
+            activeMino.direction += 4;
+        }
         //回転に失敗したら逆回転させましょう
         if (!board.CheckPosition(activeMino))
         {
             activeMino.RotateRight();
+            activeMino.direction = (activeMino.direction + 1) % 4;
         }
     }
 
@@ -112,17 +136,16 @@ public class GameManager : MonoBehaviour
         if (!board.CheckPosition(activeMino))
         {
             //固定されたときにオーバーリミットしたかどうかチェックする
-            //if (board.OverLimit(activeMino))
-            //{
+            if (board.OverLimit(activeMino))
+            {
             //ゲームーバーにする
-            //    GameOver();
-            //}
-            //else
-            //{
+                GameOver();
+            }
+            else
+            {
             //底についたときの処理
-            BottomBoard();
-            //}
-
+                BottomBoard();
+            }
         }
     }
 
@@ -141,7 +164,20 @@ public class GameManager : MonoBehaviour
         board.ClearAllRows();//埋まっていれば削除する
     }
 
-
-
+    //ゲームオーバーになったらパネルを表示
+    void GameOver()
+    {
+        activeMino.MoveUp();
+        if (!gameOverPanel.activeInHierarchy)
+        {
+            gameOverPanel.SetActive(true);
+        }
+        gameOver = true;
+    }
+    //シーン再読み込み
+    public void Restart()
+    {
+        SceneManager.LoadScene(0);
+    }
 
 }
