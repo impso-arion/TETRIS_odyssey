@@ -5,6 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Imino
+  - Jmino
+  - Lmino
+  - Omino
+  - Smino
+  - Tmino
+  - Zmino
   layers:
   - Default
   - TransparentFX

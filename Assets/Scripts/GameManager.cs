@@ -118,9 +118,43 @@ public class GameManager : MonoBehaviour
     }
     public void RotateRightActiveMino()
     {
+        string minotag = activeMino.tag;//タグと、direction(東西南北)で回転判定
         activeMino.RotateRight();
         // directionを0から3の範囲でリピート
         activeMino.direction = (activeMino.direction + 1) % 4;
+        //壁に当たったようなら内側に寄せるが、ここでミノ制御
+        if (board.OverLeftWall(activeMino))
+        {
+            Debug.Log("左壁オーバー");
+            //左壁オーバーしたら右に2移動したうえで回転
+            if (minotag == "Imino" && activeMino.direction == 2)
+            {
+                //Iミノdirection1だったら右に２動く
+                Debug.Log("Iminoの1からの変更だな");
+                activeMino.transform.position += new Vector3(3, 0, 0);
+            }
+            else
+            {
+                activeMino.transform.position += new Vector3(1, 0, 0);
+            }
+            
+        }
+        if (board.OverRightWall(activeMino))
+        {
+            //右壁オーバーしたら左に移動
+            if (minotag == "Imino" && activeMino.direction == 0)
+            {
+                //Iミノdirection1だったら右に２動く
+                activeMino.transform.position += new Vector3(-3, 0, 0);
+            }
+            else
+            {
+                activeMino.transform.position += new Vector3(-1, 0, 0);
+            }
+
+            
+            
+        }
         //回転に失敗したら逆回転させましょう
         if (!board.CheckPosition(activeMino))
         {
@@ -133,6 +167,7 @@ public class GameManager : MonoBehaviour
         activeMino.RotateLeft();
         // directionを0から3の範囲でリピート
         activeMino.direction = (activeMino.direction - 1) % 4;
+
         if (activeMino.direction < 0)
         {
             activeMino.direction += 4;

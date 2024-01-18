@@ -348,7 +348,7 @@ GameObject:
   - component: {fileID: 1327869663977657518}
   m_Layer: 0
   m_Name: Mino_O
-  m_TagString: Untagged
+  m_TagString: Omino
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -384,5 +384,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e19422074e93294d806415edfd82292, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canRotate: 1
+  canRotate: 0
   direction: 0

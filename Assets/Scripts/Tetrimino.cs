@@ -6,7 +6,7 @@ public class Tetrimino : MonoBehaviour
 {
 
     
-    //回転していいブロックかどうかなど使ってない・・・
+    //Oテトリミノは回転しない。インスペクターでチェックを外す
     [SerializeField] private bool canRotate = true;
     public int direction = 0;
     //方角　0 = 北,1=東,2＝南, 3=西
@@ -41,7 +41,6 @@ public class Tetrimino : MonoBehaviour
     //回転用(2種類)
     public void RotateRight()
     {
-        //ミノの種類だけ回転の種類がある
         if (canRotate)
         {
             transform.Rotate(0, 0, -90);

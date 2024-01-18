@@ -551,8 +551,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75a6931a2634a6f47990bce275bce17e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropInterval: 0.25
+  dropInterval: 1
   lockDownTimeStart: 0
+  lastMinoPosY: 21
   isLockDown: 0
   gameOverPanel: {fileID: 977576889}
 --- !u!4 &1111000691

@@ -168,4 +168,37 @@ public class Board : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// 右壁をオーバーしたらtrue
+    /// </summary>
+    /// <param name="tetrimino"></param>
+    /// <returns></returns>
+    public bool OverRightWall(Tetrimino tetrimino)
+    {
+        foreach(Transform item in tetrimino.transform)
+        {
+            if(item.transform.position.x > width)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    /// <summary>
+    /// 左壁をオーバーしたらtrue
+    /// </summary>
+    /// <param name="tetrimino"></param>
+    /// <returns></returns>
+    public bool OverLeftWall(Tetrimino tetrimino)
+    {
+        foreach (Transform item in tetrimino.transform)
+        {
+            if (item.transform.position.x < 0)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

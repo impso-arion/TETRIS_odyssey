@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 946059441725960235}
   m_Layer: 0
-  m_Name: Shadow_T
+  m_Name: Ghost_T
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
