@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     private GameObject gameOverPanel;
 
     //ゲームオーバー判定
-    bool gameOver;
+    public bool gameOver;
 
     private void Start()
     {
@@ -44,6 +44,12 @@ public class GameManager : MonoBehaviour
         spawner = GameObject.FindObjectOfType<Spawner>();//スポナーというコンポーネントをついているオブジェクトを探す
         board = GameObject.FindObjectOfType<Board>();//ボードを変数に格納
         spawner.transform.position = Rounding.Round(spawner.transform.position);
+
+        //Ghostリストの取得
+        List<Ghost> ghosts = spawner.GhostList;
+        //Ghostは、activeMinoの状態にあわせて呼び出され、activeMinoと同じように移動、回転を行う。
+
+
 
         //ロックダウンタイマー初期設定
         lockDownTimer = 0;

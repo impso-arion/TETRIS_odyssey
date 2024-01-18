@@ -23,8 +23,13 @@ public class Spawner : MonoBehaviour
     //関数の作成
     //次のテトリミノインデックスを作成
 
-    // ヒエラルキー上のGhostのリストをfindで取得。1度きり
-    private List<GameObject> Ghosts = new List<GameObject>();
+    // ヒエラルキー上のGhostのリストを取得。1度きり
+    [SerializeField] private List<Ghost> Ghosts = new List<Ghost>();
+    // Ghostのリストを他のスクリプトから読み取るためのプロパティ
+    public List<Ghost> GhostList
+    {
+        get { return Ghosts; }
+    }
 
     void Awake()
     {
@@ -136,10 +141,25 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    //ゴーストをfindして利用しやすいようリストに格納する。
+    //すでにヒエラルキーに存在するゴーストをfindして利用しやすいようリストに格納する。
+    //ゴーストは、再利用するため。
     private void InitializeGhosts()
     {
-        
+        for(int i = 0;i < 7; i++)
+        {
+            GameObject childObject = transform.GetChild(i).gameObject;
+            Ghost ghostComponent = childObject.GetComponent<Ghost>();
+            if (ghostComponent != null)
+            {
+                // Ghostのコンポーネントが取得できた場合、リストに追加
+                Ghosts.Add(ghostComponent);
+            }
+            else
+            {
+                // Ghostのコンポーネントが取得できなかった場合のエラー処理
+                Debug.LogError("Ghostコンポーネントが取得できませんでした。");
+            }
+        }
         
     }
 
