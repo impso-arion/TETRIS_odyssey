@@ -45,7 +45,6 @@ public class Tetrimino : MonoBehaviour
         {
             transform.Rotate(0, 0, -90);
         }
-        
     }
     public void RotateLeft()
     {

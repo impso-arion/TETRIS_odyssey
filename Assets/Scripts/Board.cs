@@ -177,7 +177,7 @@ public class Board : MonoBehaviour
     {
         foreach(Transform item in tetrimino.transform)
         {
-            if(item.transform.position.x > width)
+            if(item.transform.position.x > width-1)
             {
                 return true;
             }

@@ -125,35 +125,29 @@ public class GameManager : MonoBehaviour
         //壁に当たったようなら内側に寄せるが、ここでミノ制御
         if (board.OverLeftWall(activeMino))
         {
-            Debug.Log("左壁オーバー");
             //左壁オーバーしたら右に2移動したうえで回転
             if (minotag == "Imino" && activeMino.direction == 2)
             {
-                //Iミノdirection1だったら右に２動く
-                Debug.Log("Iminoの1からの変更だな");
+                //Iミノdirection1だったら右に３動く
                 activeMino.transform.position += new Vector3(3, 0, 0);
             }
             else
             {
                 activeMino.transform.position += new Vector3(1, 0, 0);
             }
-            
         }
         if (board.OverRightWall(activeMino))
         {
             //右壁オーバーしたら左に移動
             if (minotag == "Imino" && activeMino.direction == 0)
             {
-                //Iミノdirection1だったら右に２動く
+                //Iミノdirection1だったら左に３動く
                 activeMino.transform.position += new Vector3(-3, 0, 0);
             }
             else
             {
                 activeMino.transform.position += new Vector3(-1, 0, 0);
             }
-
-            
-            
         }
         //回転に失敗したら逆回転させましょう
         if (!board.CheckPosition(activeMino))
@@ -164,14 +158,43 @@ public class GameManager : MonoBehaviour
     }
     public void RotateLeftActiveMino()
     {
+        string minotag = activeMino.tag;//タグと、direction(東西南北)で回転判定
         activeMino.RotateLeft();
+        Debug.Log("TAG"+ minotag);
+        
         // directionを0から3の範囲でリピート
         activeMino.direction = (activeMino.direction - 1) % 4;
-
         if (activeMino.direction < 0)
         {
             activeMino.direction += 4;
         }
+        Debug.Log("方角" + activeMino.direction);
+        //壁に当たったようなら内側に寄せるが、ここでミノ制御
+        if (board.OverLeftWall(activeMino))
+        {
+            if (minotag == "Imino" && activeMino.direction == 0)
+            {
+            //Iミノdirection0だったら右に３動く
+                activeMino.transform.position += new Vector3(2, 0, 0);
+            }
+            else
+            {//0 3
+                activeMino.transform.position += new Vector3(1, 0, 0);
+            }
+        }
+        if (board.OverRightWall(activeMino))
+        {
+            if (minotag == "Imino" && activeMino.direction == 2)
+            {
+                //Iミノdirection0だったら右に３動く
+                activeMino.transform.position += new Vector3(-2, 0, 0);
+            }
+            else
+            {//0 3
+                activeMino.transform.position += new Vector3(-1, 0, 0);
+            }
+        }
+        
         //回転に失敗したら逆回転させましょう
         if (!board.CheckPosition(activeMino))
         {
