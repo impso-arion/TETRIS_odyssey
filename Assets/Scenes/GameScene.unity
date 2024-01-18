@@ -552,6 +552,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropInterval: 0.25
+  lockDownTimeStart: 0
+  isLockDown: 0
   gameOverPanel: {fileID: 977576889}
 --- !u!4 &1111000691
 Transform:
@@ -862,7 +864,7 @@ Transform:
   m_GameObject: {fileID: 1731228918}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.5, y: 25, z: -1}
+  m_LocalPosition: {x: 4, y: 21, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

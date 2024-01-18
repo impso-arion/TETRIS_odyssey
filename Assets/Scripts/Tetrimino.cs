@@ -6,7 +6,7 @@ public class Tetrimino : MonoBehaviour
 {
 
     
-    //回転していいブロックかどうか
+    //回転していいブロックかどうかなど使ってない・・・
     [SerializeField] private bool canRotate = true;
     public int direction = 0;
     //方角　0 = 北,1=東,2＝南, 3=西

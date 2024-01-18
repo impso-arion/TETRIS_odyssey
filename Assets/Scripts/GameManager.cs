@@ -23,9 +23,11 @@ public class GameManager : MonoBehaviour
     //クラシックロックダウンシステムを採用する
     //ミノが下に落ちると、ロックダウンタイマーがリセットされる
     //ミノが同じ高さに0.5秒以上いると、ロックダウンされる。
-    private float lockDownInterval = 0.5f; // ミノが着地してからのタイマー
-    private float lockDownTime;
-
+    private float lockDownInterval = 0.5f; // ミノが着地してからのインターバル
+    private float lockDownTimer;//ロックダウンタイマー
+    [SerializeField] private float lockDownTimeStart;//ロックダウンタイマースタート時間
+    [SerializeField] private int lastMinoPosY = 21;//初期位置は21
+    [SerializeField]private bool isLockDown = false;
 
 
     [SerializeField]
@@ -42,7 +44,7 @@ public class GameManager : MonoBehaviour
         spawner.transform.position = Rounding.Round(spawner.transform.position);
 
         //ロックダウンタイマー初期設定
-        lockDownTime = Time.time + lockDownInterval;
+        lockDownTimer = 0;
 
         //パネル非表示
         if (gameOverPanel.activeInHierarchy)
@@ -62,14 +64,8 @@ public class GameManager : MonoBehaviour
             activeMino = spawner.getNext1Mino();
             activeMino.transform.position = spawner.transform.position;
         }
-        //activeMinoの時間をチェックする関数
-        //activeMinoのyをチェックして、数値が下がれば時間をリセットする
-        //リセットされず0.5秒すぎたらロックダウン可
 
-
-
-        //PlayerInput();
-        if ((Time.time > nextdropTimer))//ボタン連打でなく、時間経過で落ちるようにしたい。
+        if ((Time.time > nextdropTimer))//ボタン連打でなく、時間経過による落下。
         {
             activeMino.MoveDown();//下に動かす
             nextdropTimer = Time.time + dropInterval;
@@ -85,11 +81,17 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                //ロックダウンタイマー
-                //底についたときの処理
-                BottomBoard();
+                    //ロックダウンタイマー
+                    //底についたときの処理
+                    activeMino.MoveUp();
+                    LockDownTimeCheck(activeMino);
                 }
             }
+        }
+        //底についたときの処理
+        if (isLockDown)//ロックダウン可ならロックダウンする
+        {
+            BottomBoard();
         }
     }
 
@@ -149,6 +151,7 @@ public class GameManager : MonoBehaviour
         //下に行きすぎたら固定
         if (!board.CheckPosition(activeMino))
         {
+            activeMino.MoveUp();
             //固定されたときにオーバーリミットしたかどうかチェックする
             if (board.OverLimit(activeMino))
             {
@@ -157,8 +160,14 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-            //底についたときの処理
-                BottomBoard();
+                //底についたときの処理
+                LockDownTimeCheck(activeMino);
+                
+                //底についたときの処理
+                if (!isLockDown)//ロックダウン可ならロックダウンする
+                {
+                    BottomBoard();
+                }
             }
         }
     }
@@ -170,9 +179,12 @@ public class GameManager : MonoBehaviour
     //ボードのそこに着いた時に次のブロックを生成する関数
     void BottomBoard()
     {
-        activeMino.MoveUp();//上にはめこむ
+        //activeMino.MoveUp();//上にはめこむ
         board.SaveBlockInGrid(activeMino);//今のブロックの位置を登録してあげる
-
+        
+        isLockDown = false;//ロックダウン初期化
+        lockDownTimer = 0;//ロックダウンタイマーリセット
+        lastMinoPosY = 21;
         activeMino = spawner.getNext1Mino();//次のブロック生成
         activeMino.transform.position = spawner.transform.position;//次のブロックの位置変更
         board.ClearAllRows();//埋まっていれば削除する
@@ -192,6 +204,32 @@ public class GameManager : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(0);
+    }
+    /// <summary>
+    /// ロックダウンタイマー
+    /// </summary>
+    /// リセットされず0.5秒すぎたらロックダウン可
+    void LockDownTimeCheck(Tetrimino activeMino)
+    {
+        float posY = activeMino.transform.position.y;
+        if ((int)posY < lastMinoPosY)//過去のポジションより下がっているならば
+        {
+            lastMinoPosY = (int)posY;//ポジションを更新する
+            lockDownTimeStart = Time.time;//スタート時間を更新する
+            lockDownTimer = 0;//ロックダウンタイマーリセット
+            isLockDown = false;
+            return;
+        }else if ((int)posY == lastMinoPosY)//過去のポジションと同じならば
+        {
+            //タイマー内容チェック Time.timeは、ゲームが開始してからの経過時間
+            //タイマーの加算
+            lockDownTimer = lockDownTimeStart + Time.time;//ロックダウンスタートからの経過時間
+            if (lockDownTimer >= lockDownInterval)
+            {
+                //ロックダウンタイマーが大きければロックダウン
+                isLockDown = true;
+            }
+        }
     }
 
 }
