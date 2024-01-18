@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     Tetrimino activeMino;
     //ボードのスクリプトを格納
     Board board;
+    
+
 
     //次にブロックが落ちるまでのインターバル時間
     //次のブロックが落ちるまでの時間

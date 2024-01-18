@@ -345,6 +345,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 270243598147079889}
+  - component: {fileID: -2174967859916126811}
   m_Layer: 0
   m_Name: Ghost_I
   m_TagString: Imino
@@ -371,3 +372,16 @@ Transform:
   - {fileID: 3172837757467775223}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-2174967859916126811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5570250018139976037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 297f21dc5598cef49afd74751f237239, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ghosts: []

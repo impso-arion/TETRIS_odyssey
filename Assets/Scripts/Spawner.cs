@@ -11,6 +11,7 @@ public class Spawner : MonoBehaviour
     //配列の作成
     //[SerializeField] List<Tetrimino> Minos;//ミノリストの中にミノを格納する。インスペクターで。
     [SerializeField] Tetrimino[] tetriminos;//ミノリストの中にミノを格納する。インスペクターで登録します
+    
 
     private List<int> tetriminoIndexes; // ランダムな順序のミノのインデックスを保持するリスト
     private int currentTetriminoIndex = 0; // 現在のミノのインデックス
@@ -22,10 +23,16 @@ public class Spawner : MonoBehaviour
     //関数の作成
     //次のテトリミノインデックスを作成
 
+    // ヒエラルキー上のGhostのリストをfindで取得。1度きり
+    private List<GameObject> Ghosts = new List<GameObject>();
+
     void Awake()
     {
         //初期インデックス
         InitializeTetriminoIndexes();
+        
+        //ゴースト取得
+        InitializeGhosts();
     }
 
 
@@ -128,5 +135,15 @@ public class Spawner : MonoBehaviour
             return null;
         }
     }
+
+    //ゴーストをfindして利用しやすいようリストに格納する。
+    private void InitializeGhosts()
+    {
+        
+        
+    }
+
+
+
 }
 
