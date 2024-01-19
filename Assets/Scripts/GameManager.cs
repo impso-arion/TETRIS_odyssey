@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
 
     //生成されたミノを格納
     Tetrimino activeMino;
+    //生成されたゴーストを格納
+    Ghost activeGhost;
+    private List<Ghost> ghosts;
     //ボードのスクリプトを格納
     Board board;
     
@@ -46,10 +49,7 @@ public class GameManager : MonoBehaviour
         spawner.transform.position = Rounding.Round(spawner.transform.position);
 
         //Ghostリストの取得
-        List<Ghost> ghosts = spawner.GhostList;
-        //Ghostは、activeMinoの状態にあわせて呼び出され、activeMinoと同じように移動、回転を行う。
-
-
+        ghosts = spawner.GhostList;
 
         //ロックダウンタイマー初期設定
         lockDownTimer = 0;
@@ -66,12 +66,17 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-        //spawnerクラスからブロック生成関数を呼んで変数に格納
-        if (!activeMino)//空のとき
+        if (!activeMino)//空のとき。これは初回だけ呼ばれるだろう
         {
+            //spawnerクラスからブロック生成関数を呼んで変数に格納
             activeMino = spawner.getNext1Mino();
             activeMino.transform.position = spawner.transform.position;
+            //ghostsの中からひとつ選択してactiveGhostにする。
+            GhostChange(activeMino);
+            //activeGhostの位置はactiveMinoに追従する
         }
+        //ゴーストの位置を決める
+        GhostPosition(activeMino,activeGhost);
 
         if ((Time.time > nextdropTimer))//ボタン連打でなく、時間経過による落下。
         {
@@ -103,7 +108,96 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+    void GhostPosition(Tetrimino activeMino,Ghost activeGhost)
+    {
+        //ゴーストの位置を決める
+        //方角をもとに回転
+        int direct = activeMino.direction;
+        activeGhost.Rotate(direct);
+        //pos.xはactiveMinoに追従
+        float posX = activeMino.transform.position.x;
+        activeGhost.transform.position = new Vector3(posX,0,0);//とりあえず最下部
+        //pos.yは最上部から順にチェック
+        //for (int i = 20; i > 0; i--)
+        //{
+        //    if (board.ghostCheckPosition(activeGhost))//
+        //    {
+        //        //ポジションチェック。当たるところ
+        //        activeGhost.transform.position = new Vector3(posX, i, 0);
+        //    }
+        //}
+
+
+
+
+
+
+
+        ///これは最下部からチェックするばあい
+        for (int i = 0; i < 20; i++)
+        {
+            if (!board.ghostCheckPosition(activeGhost))//
+            {
+                //ポジションチェック。OKなところで確定
+                activeGhost.transform.position = new Vector3(posX, i, 0);
+            }
+        }
+
+
+    }
+
+
+
+    //
+    /// <summary>
+    /// ゴースト呼び出しと戻し
+    /// </summary>
+    /// <param name="activeMino"></param>
+    /// 待機ゴーストの位置はVector3(-100,0,0)非表示にはしない
+    void GhostChange(Tetrimino activeMino)
+    {
+        Vector3 prPos = new Vector3(-100, 0, 0);
+        //activeMinoから、とりだすゴーストをゲット。
+        //それ以外のゴーストたちは画面外に飛ばす。
+        string tagname = activeMino.tag;
+        //Debug.Log(tagname);
+        // Ghostリストが空でないことを確認してから利用
+        if (ghosts.Count > 0)
+        {
+            //すべてのGhostを先にしまう
+            for(int i = 0; i < ghosts.Count; i++)
+            {
+                ghosts[i].transform.position = prPos;
+            }
+            switch (tagname)
+            {
+                case "Imino":
+                    activeGhost = ghosts[0];
+                    break;
+                case "Jmino":
+                    activeGhost = ghosts[1];
+                    break;
+                case "Lmino":
+                    activeGhost = ghosts[2];
+                    break;
+                case "Omino":
+                    activeGhost = ghosts[3];
+                    break;
+                case "Smino":
+                    activeGhost = ghosts[4];
+                    break;
+                case "Tmino":
+                    activeGhost = ghosts[5];
+                    break;
+                case "Zmino":
+                    activeGhost = ghosts[6];
+                    break;
+            }
+        }
+    }
+
+
+
     public void MoveActiveMinoLeft()
     {
         // activeMinoを左に移動する処理
@@ -253,6 +347,7 @@ public class GameManager : MonoBehaviour
         lastMinoPosY = 21;
         activeMino = spawner.getNext1Mino();//次のブロック生成
         activeMino.transform.position = spawner.transform.position;//次のブロックの位置変更
+        GhostChange(activeMino);//ゴースト生成
         board.ClearAllRows();//埋まっていれば削除する
     }
 

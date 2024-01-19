@@ -12,7 +12,14 @@ public class Tetrimino : MonoBehaviour
     //方角　0 = 北,1=東,2＝南, 3=西
 
 
-    
+    void Update()
+    {
+        // 子供がいない場合に自分自身を破棄する
+        if (transform.childCount == 0)
+        {
+            Destroy(gameObject);
+        }
+    }
 
 
     //移動用

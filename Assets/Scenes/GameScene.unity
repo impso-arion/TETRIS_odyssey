@@ -861,6 +861,7 @@ MonoBehaviour:
   lastMinoPosY: 21
   isLockDown: 0
   gameOverPanel: {fileID: 977576889}
+  gameOver: 0
 --- !u!4 &1111000691
 Transform:
   m_ObjectHideFlags: 0
@@ -1322,6 +1323,7 @@ MonoBehaviour:
   - {fileID: 4004510306895099833, guid: 0b0fa21f8d94e0f4a81a40ea3a698af2, type: 3}
   - {fileID: -1015566034119017466, guid: 586a31f2f4266e3489d5be7c9533f8d3, type: 3}
   - {fileID: 6273615290782084259, guid: e25809ca60fc3d1468698092b707498e, type: 3}
+  Ghosts: []
 --- !u!1 &1738872116
 GameObject:
   m_ObjectHideFlags: 0

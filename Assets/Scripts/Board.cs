@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 using static Unity.Collections.AllocatorManager;
 
@@ -17,6 +18,7 @@ public class Board : MonoBehaviour
     private Transform emptySprite;//空の絵
     [SerializeField]
     private int height = 30, width = 10, header = 8;
+
 
     private void Awake()
     {
@@ -81,6 +83,7 @@ public class Board : MonoBehaviour
         //というときにtrueを返してくれる
         return (grid[x, y] != null && grid[x, y].parent != tetrimino.transform);
     }
+    
     //ブロックが落ちたポジションを記録する関数
     public void SaveBlockInGrid(Tetrimino tetrimino)
     {
@@ -199,6 +202,33 @@ public class Board : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public bool ghostCheckPosition(Ghost activeGhost)//trueならおさまっている
+    {
+        foreach (Transform item in activeGhost.transform)//tetriminoに含まれているtransformの数だけループを回す。
+        {
+            //数値を丸める
+            Vector2 pos = new Vector2(Mathf.Round(item.position.x),
+                Mathf.Round(item.position.y));
+            //枠からはみだしていないのかチェック
+            if (!BoardOutCheck((int)pos.x, (int)pos.y))
+            {
+                return false;
+            }
+            //すでに他のブロックがあるかチェック
+            if (GhostBlockCheck((int)pos.x, (int)pos.y, activeGhost))
+            {
+                return false;
+            }
+        }
+        return true;//おさまっていたよ
+    }
+    bool GhostBlockCheck(int x, int y, Ghost ghost)
+    {
+        //次元配列が空でない　アンド　gridの親とghostの親が違う
+        //というときにtrueを返してくれる
+        return (grid[x, y] != null && grid[x, y].parent != ghost.transform);
     }
 
 }
