@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -116,30 +117,16 @@ public class GameManager : MonoBehaviour
         activeGhost.Rotate(direct);
         //pos.xはactiveMinoに追従
         float posX = activeMino.transform.position.x;
-        activeGhost.transform.position = new Vector3(posX,0,0);//とりあえず最下部
+        activeGhost.transform.position = new Vector3(posX,20,0);//とりあえず最上部
         //pos.yは最上部から順にチェック
-        //for (int i = 20; i > 0; i--)
-        //{
-        //    if (board.ghostCheckPosition(activeGhost))//
-        //    {
-        //        //ポジションチェック。当たるところ
-        //        activeGhost.transform.position = new Vector3(posX, i, 0);
-        //    }
-        //}
-
-
-
-
-
-
-
-        ///これは最下部からチェックするばあい
-        for (int i = 0; i < 20; i++)
+        for (int i = 20; i >= 0; i--)
         {
+            activeGhost.transform.position = new Vector3(posX, i, 0);
             if (!board.ghostCheckPosition(activeGhost))//
             {
-                //ポジションチェック。OKなところで確定
-                activeGhost.transform.position = new Vector3(posX, i, 0);
+                //ポジションチェック。一度あたればOK
+                activeGhost.transform.position = new Vector3(posX, i+1, 0);
+                break;
             }
         }
 
@@ -227,11 +214,12 @@ public class GameManager : MonoBehaviour
         //壁に当たったようなら内側に寄せるが、ここでミノ制御
         if (board.OverLeftWall(activeMino))
         {
+            
             //左壁オーバーしたら右に2移動したうえで回転
             if (minotag == "Imino" && activeMino.direction == 2)
             {
                 //Iミノdirection1だったら右に３動く
-                activeMino.transform.position += new Vector3(3, 0, 0);
+                activeMino.transform.position += new Vector3(2, 0, 0);
             }
             else
             {
@@ -240,11 +228,12 @@ public class GameManager : MonoBehaviour
         }
         if (board.OverRightWall(activeMino))
         {
+            
             //右壁オーバーしたら左に移動
             if (minotag == "Imino" && activeMino.direction == 0)
             {
                 //Iミノdirection1だったら左に３動く
-                activeMino.transform.position += new Vector3(-3, 0, 0);
+                activeMino.transform.position += new Vector3(-2, 0, 0);
             }
             else
             {
@@ -262,21 +251,18 @@ public class GameManager : MonoBehaviour
     {
         string minotag = activeMino.tag;//タグと、direction(東西南北)で回転判定
         activeMino.RotateLeft();
-        Debug.Log("TAG"+ minotag);
-        
         // directionを0から3の範囲でリピート
         activeMino.direction = (activeMino.direction - 1) % 4;
         if (activeMino.direction < 0)
         {
             activeMino.direction += 4;
         }
-        Debug.Log("方角" + activeMino.direction);
         //壁に当たったようなら内側に寄せるが、ここでミノ制御
         if (board.OverLeftWall(activeMino))
         {
-            if (minotag == "Imino" && activeMino.direction == 0)
+            if (minotag == "Imino" && activeMino.direction == 2)
             {
-            //Iミノdirection0だったら右に３動く
+                //Iミノdirection0だったら右に３動く
                 activeMino.transform.position += new Vector3(2, 0, 0);
             }
             else
@@ -286,7 +272,7 @@ public class GameManager : MonoBehaviour
         }
         if (board.OverRightWall(activeMino))
         {
-            if (minotag == "Imino" && activeMino.direction == 2)
+            if (minotag == "Imino" && activeMino.direction == 0)
             {
                 //Iミノdirection0だったら右に３動く
                 activeMino.transform.position += new Vector3(-2, 0, 0);
@@ -296,7 +282,6 @@ public class GameManager : MonoBehaviour
                 activeMino.transform.position += new Vector3(-1, 0, 0);
             }
         }
-        
         //回転に失敗したら逆回転させましょう
         if (!board.CheckPosition(activeMino))
         {
@@ -392,5 +377,17 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// ハードドロップ
+    /// </summary>
+    public void HardDrop()
+    {
+        //activeGhostの位置にactiveMinoを入れ替え
+        Vector3 newpos = activeGhost.transform.position;
+        activeMino.transform.position = newpos;
+        BottomBoard();
+    }
+
 
 }

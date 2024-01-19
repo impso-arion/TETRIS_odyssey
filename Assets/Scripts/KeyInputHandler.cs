@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class KeyInputHandler : MonoBehaviour
 {
@@ -9,13 +10,13 @@ public class KeyInputHandler : MonoBehaviour
     private bool isPaused = false;
     
     //入力受付タイマー(3種類)
-    float nextKeyDownTimer, nextKeyLeftRightTimer, nextKeyRotateTimer,nextPauseTimer;
+    float nextKeyDownTimer, nextKeyLeftRightTimer, nextKeyRotateTimer,nextPauseTimer,hardDropTimer;
     //入力インターバル(3種類)
     [SerializeField]
-    public float nextKeyDownInterval, nextKeyLeftRightInterval, nextKeyRotateInterval,pauseInterval;
+    public float nextKeyDownInterval, nextKeyLeftRightInterval, nextKeyRotateInterval,pauseInterval,HardDropInterval;
     //ポーズテキスト
     public TextMeshProUGUI pauseTxt;
-
+    public RawImage KeyInfo;
 
     void Start()
     {
@@ -25,8 +26,11 @@ public class KeyInputHandler : MonoBehaviour
         nextKeyDownTimer = Time.time + nextKeyDownInterval;
         nextKeyLeftRightTimer = Time.time + nextKeyLeftRightInterval;
         nextKeyRotateTimer = Time.time + nextKeyRotateInterval;
-        // ゲーム開始時にpauseTxtを非表示にする
+        hardDropTimer = Time.time + hardDropTimer;
+
+        // ゲーム開始時にpauseTxtとKeyInfoを非表示にする
         pauseTxt.gameObject.SetActive(false);
+        KeyInfo.gameObject.SetActive(false);
     }
     // Update is called once per frame
     void Update()
@@ -35,7 +39,13 @@ public class KeyInputHandler : MonoBehaviour
         {
             return;
         }
-
+        //ハードドロップ
+        if (Input.GetKey(KeyCode.Space) && (Time.time > hardDropTimer)
+            || Input.GetKey(KeyCode.Keypad8) && (Time.time > hardDropTimer))
+        {
+            hardDropTimer = Time.time + HardDropInterval;
+            gameManager.HardDrop();
+        }
         //ポーズボタンも連打制御
         if (Input.GetKeyDown(KeyCode.Escape) && (Time.realtimeSinceStartup > nextPauseTimer)
             || Input.GetKeyDown(KeyCode.F1) && (Time.realtimeSinceStartup > nextPauseTimer))
@@ -108,6 +118,7 @@ public class KeyInputHandler : MonoBehaviour
             // ゲームが一時停止されたときの処理
             Time.timeScale = 0f;
             pauseTxt.gameObject.SetActive(true);
+            KeyInfo.gameObject.SetActive(true);
         }
         else
         {
@@ -115,6 +126,7 @@ public class KeyInputHandler : MonoBehaviour
             // ゲームが再開されたときの処理
             Time.timeScale = 1f;
             pauseTxt.gameObject.SetActive(false);
+            KeyInfo.gameObject.SetActive(false);
         }
     }
 
