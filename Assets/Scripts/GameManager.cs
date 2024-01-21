@@ -18,8 +18,6 @@ public class GameManager : MonoBehaviour
     private List<Ghost> ghosts;
     //ボードのスクリプトを格納
     Board board;
-    
-
 
     //次にブロックが落ちるまでのインターバル時間
     //次のブロックが落ちるまでの時間
