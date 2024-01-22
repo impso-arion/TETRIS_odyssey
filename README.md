@@ -21,6 +21,9 @@ Pause Escキー F1キー
 クラシックロックダウンを採用しています。
 同じラインで0.5秒ミノが存在するならばロックダウンします。現在のラインよりも下にさがれば、ロックダウンタイマーはリセットされます。  
 
+## 画像
+![プレイ画面](doc/play.png)
+
 ## 参考
 [Unity入門に最適な、テトリス講座【Unity】](https://www.youtube.com/watch?v=IbHhV_-8VxQ)  
 [Unity 2D でテトリスを制作しました（コードや仕様の公開）](https://fall-and-fall.hatenablog.com/entry/unity/2d/tetris/overview)  
