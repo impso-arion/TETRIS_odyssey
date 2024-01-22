@@ -28,9 +28,9 @@ Tスピンなどの技が使用できる、スーパーローテーションシ�
 クラシックローテーションシステムです。
 
 ## 画像
-![プレイ画面](doc/play.png)  
-![pause画面](doc/pause.png)  
-![GameOver画面](doc/gameover.png)  
+![プレイ画面](doc/play1.png)  
+![pause画面](doc/pause1.png)  
+![GameOver画面](doc/gameover1.png)  
 
 
 ## 参考
