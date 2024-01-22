@@ -29,9 +29,6 @@ Tスピンなどの技が使用できる、スーパーローテーションシ�
 
 ## 画像
 ![プレイ画面](doc/play1.png)  
-![pause画面](doc/pause1.png)  
-![GameOver画面](doc/gameover1.png)  
-
 
 ## 参考
 [Unity入門に最適な、テトリス講座【Unity】](https://www.youtube.com/watch?v=IbHhV_-8VxQ)  
