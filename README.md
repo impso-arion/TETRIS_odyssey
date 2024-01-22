@@ -22,9 +22,9 @@ Pause Escキー F1キー
 同じラインで0.5秒ミノが存在するならばロックダウンします。現在のラインよりも下にさがれば、ロックダウンタイマーはリセットされます。  
 
 ## 画像
-![プレイ画面](doc/play.png)
-![pause画面](doc/pause.png)
-![GameOver画面](doc/gameover.png)
+![プレイ画面](doc/play.png)  
+![pause画面](doc/pause.png)  
+![GameOver画面](doc/gameover.png)  
 
 
 ## 参考
