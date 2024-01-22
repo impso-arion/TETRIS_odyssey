@@ -30,3 +30,5 @@ Pause Escキー F1キー
 ## 参考
 [Unity入門に最適な、テトリス講座【Unity】](https://www.youtube.com/watch?v=IbHhV_-8VxQ)  
 [Unity 2D でテトリスを制作しました（コードや仕様の公開）](https://fall-and-fall.hatenablog.com/entry/unity/2d/tetris/overview)  
+  
+Docフォルダに、ガイドラインのPDFがありますので、参考にされてください。
