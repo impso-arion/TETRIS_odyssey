@@ -93,7 +93,6 @@ public class Spawner : MonoBehaviour
         // 現在のミノを生成
         int nextIndex = tetriminoIndexes[currentTetriminoIndex];
         Tetrimino nextTetrimino = tetriminos[nextIndex];
-        //Debug.Log(nextIndex);
         // ミノ生成後、次のミノのためにインデックスを更新
         currentTetriminoIndex = (currentTetriminoIndex + 1) % 7;//7種1順である
         if(currentTetriminoIndex == 0)

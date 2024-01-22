@@ -79,7 +79,6 @@ public class KeyInputHandler : MonoBehaviour
             || Input.GetKey(KeyCode.Keypad2) && (Time.time > nextKeyDownTimer)
             )
         {
-                //Debug.Log("下押した");
                 nextKeyDownTimer = Time.time + nextKeyDownInterval;
                 gameManager.MoveActiveMinoDown();
                 //ソフトドロップ
@@ -94,10 +93,11 @@ public class KeyInputHandler : MonoBehaviour
                 nextKeyRotateTimer = Time.time + nextKeyRotateInterval;
                 //右回転
                 gameManager.RotateRightActiveMino();
-                
         }
         //RotateCounterclockwise
         if (Input.GetKey(KeyCode.Z) && (Time.time > nextKeyRotateTimer) 
+            || Input.GetKey(KeyCode.LeftControl) && (Time.time > nextKeyRotateTimer)
+            || Input.GetKey(KeyCode.RightControl) && (Time.time > nextKeyRotateTimer)
             || Input.GetKey(KeyCode.Keypad3) && (Time.time > nextKeyRotateTimer)
             || Input.GetKey(KeyCode.Keypad7) && (Time.time > nextKeyRotateTimer))
         {
@@ -114,7 +114,6 @@ public class KeyInputHandler : MonoBehaviour
 
         if (isPaused)
         {
-            //Debug.Log("とめる");
             // ゲームが一時停止されたときの処理
             Time.timeScale = 0f;
             pauseTxt.gameObject.SetActive(true);
@@ -122,7 +121,6 @@ public class KeyInputHandler : MonoBehaviour
         }
         else
         {
-            //Debug.Log("とめない");
             // ゲームが再開されたときの処理
             Time.timeScale = 1f;
             pauseTxt.gameObject.SetActive(false);

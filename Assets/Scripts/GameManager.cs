@@ -145,7 +145,6 @@ public class GameManager : MonoBehaviour
         //activeMinoから、とりだすゴーストをゲット。
         //それ以外のゴーストたちは画面外に飛ばす。
         string tagname = activeMino.tag;
-        //Debug.Log(tagname);
         // Ghostリストが空でないことを確認してから利用
         if (ghosts.Count > 0)
         {
@@ -180,8 +179,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-
 
     public void MoveActiveMinoLeft()
     {
@@ -260,11 +257,11 @@ public class GameManager : MonoBehaviour
         {
             if (minotag == "Imino" && activeMino.direction == 2)
             {
-                //Iミノdirection0だったら右に３動く
+                //Iミノdirection2だったら右に2動く
                 activeMino.transform.position += new Vector3(2, 0, 0);
             }
             else
-            {//0 3
+            {
                 activeMino.transform.position += new Vector3(1, 0, 0);
             }
         }
@@ -272,11 +269,11 @@ public class GameManager : MonoBehaviour
         {
             if (minotag == "Imino" && activeMino.direction == 0)
             {
-                //Iミノdirection0だったら右に３動く
+                //Iミノdirection0だったら左に2動く
                 activeMino.transform.position += new Vector3(-2, 0, 0);
             }
             else
-            {//0 3
+            {
                 activeMino.transform.position += new Vector3(-1, 0, 0);
             }
         }
@@ -314,10 +311,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
-
-
-
     //下に着地したときの処理
     //ボードのそこに着いた時に次のブロックを生成する関数
     void BottomBoard()
