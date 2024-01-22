@@ -10,6 +10,7 @@ Pause Escキー F1キー
 右回転 :上 or X or key9,key5,key1  
 左回転 :Z or key3,key7  
 ハードドロップ：Space or key8  
+ホールド：C or key0
 
 ## 生成  
 7種のミノをランダムに生成します  
