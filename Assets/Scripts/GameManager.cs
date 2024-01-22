@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     //ホールドされるテトリミノ格納
     Tetrimino holdMino;
     public GameObject HoldPos;//ホールド置き場
+    
 
     //次にブロックが落ちるまでのインターバル時間
     //次のブロックが落ちるまでの時間
@@ -388,6 +389,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void Hold()
     {
+        if (activeMino.isHold)//ミノがすでにホールドされたものであれば、ホールドできない
+        {
+            return;
+        }
+
         //Holdポジション
         Vector3 pos = HoldPos.transform.position;
 
@@ -413,12 +419,14 @@ public class GameManager : MonoBehaviour
 
         if (!holdMino)//現在ホールドが存在しなければ、activeMinoがnullになる
         {
+            activeMino.isHold = true;
             holdMino = activeMino;
             holdMino.transform.position = pos;
             activeMino = null;
         }
         else//現在ホールドが存在しているならば、activeMinoといれかえ、holoを落下させる。
         {
+            activeMino.isHold = true;
             Tetrimino tmpMino = holdMino;//ホールドを別のところに避けて作業
             holdMino = activeMino;
             holdMino.transform.position = pos;

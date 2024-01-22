@@ -10,7 +10,7 @@ public class Tetrimino : MonoBehaviour
     [SerializeField] private bool canRotate = true;
     public int direction = 0;
     //方角　0 = 北,1=東,2＝南, 3=西
-
+    public bool isHold = false;//一度ホールドされたものは戻せない
 
     void Update()
     {
