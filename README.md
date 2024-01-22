@@ -1,6 +1,6 @@
 ## Unityによるテトリス  
 Unity Version 2022.3.17f1  
-[UnityPlay;https://play.unity.com/p/webgl-builds-387543/edit](https://play.unity.com/p/webgl-builds-387543/edit)  
+[UnityPlay](https://play.unity.com/p/webgl-builds-387543/edit)  
 
   
 ## 操作  
