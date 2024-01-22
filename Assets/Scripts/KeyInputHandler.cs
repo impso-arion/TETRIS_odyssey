@@ -10,10 +10,10 @@ public class KeyInputHandler : MonoBehaviour
     private bool isPaused = false;
     
     //入力受付タイマー(3種類)
-    float nextKeyDownTimer, nextKeyLeftRightTimer, nextKeyRotateTimer,nextPauseTimer,hardDropTimer;
+    float nextKeyDownTimer, nextKeyLeftRightTimer, nextKeyRotateTimer,nextPauseTimer,hardDropTimer,holdTimer;
     //入力インターバル(3種類)
     [SerializeField]
-    public float nextKeyDownInterval, nextKeyLeftRightInterval, nextKeyRotateInterval,pauseInterval,HardDropInterval;
+    public float nextKeyDownInterval, nextKeyLeftRightInterval, nextKeyRotateInterval,pauseInterval,HardDropInterval,HoldInterval;
     //ポーズテキスト
     public TextMeshProUGUI pauseTxt;
     public RawImage KeyInfo;
@@ -27,6 +27,7 @@ public class KeyInputHandler : MonoBehaviour
         nextKeyLeftRightTimer = Time.time + nextKeyLeftRightInterval;
         nextKeyRotateTimer = Time.time + nextKeyRotateInterval;
         hardDropTimer = Time.time + hardDropTimer;
+        holdTimer = Time.time + holdTimer;
 
         // ゲーム開始時にpauseTxtとKeyInfoを非表示にする
         pauseTxt.gameObject.SetActive(false);
@@ -105,6 +106,15 @@ public class KeyInputHandler : MonoBehaviour
                 //左回転
                 gameManager.RotateLeftActiveMino();
         }
+        //HoldShift, C, Numpad 0
+        if (Input.GetKey(KeyCode.C) && (Time.time > holdTimer)
+            || Input.GetKey(KeyCode.Keypad0) && (Time.time > holdTimer)
+            || Input.GetKey(KeyCode.LeftShift) && (Time.time > holdTimer))
+        {
+            holdTimer = Time.time + HoldInterval;
+            gameManager.Hold();
+        }
+
 
     }
 

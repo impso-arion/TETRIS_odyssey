@@ -19,6 +19,10 @@ public class GameManager : MonoBehaviour
     //ボードのスクリプトを格納
     Board board;
 
+    //ホールドされるテトリミノ格納
+    Tetrimino holdMino;
+    public GameObject HoldPos;//ホールド置き場
+
     //次にブロックが落ちるまでのインターバル時間
     //次のブロックが落ちるまでの時間
     [SerializeField] private float dropInterval = 0.25f;
@@ -379,6 +383,51 @@ public class GameManager : MonoBehaviour
         activeMino.transform.position = newpos;
         BottomBoard();
     }
+    /// <summary>
+    /// Hold
+    /// </summary>
+    public void Hold()
+    {
+        //Holdポジション
+        Vector3 pos = HoldPos.transform.position;
+
+        //ActiveMinoを北向きに修正
+        if(activeMino.direction == 1)
+        {
+            //1なら90度
+            activeMino.RotateLeft();
+            activeMino.direction = 0;
+        }else if(activeMino.direction == 2)
+        {
+            //2なら180度
+            activeMino.RotateLeft();
+            activeMino.RotateLeft();
+            activeMino.direction = 0;
+        }
+        else if(activeMino.direction == 3)
+        {
+            //3なら-90度
+            activeMino.RotateRight();
+            activeMino.direction = 0;
+        }//角度0ならそのまま
+
+        if (!holdMino)//現在ホールドが存在しなければ、activeMinoがnullになる
+        {
+            holdMino = activeMino;
+            holdMino.transform.position = pos;
+            activeMino = null;
+        }
+        else//現在ホールドが存在しているならば、activeMinoといれかえ、holoを落下させる。
+        {
+            Tetrimino tmpMino = holdMino;//ホールドを別のところに避けて作業
+            holdMino = activeMino;
+            holdMino.transform.position = pos;
+            activeMino = tmpMino;
+            activeMino.transform.position = new Vector3(4,22,0);
+            GhostChange(activeMino);//ゴースト生成
+        }
+    }
+
 
 
 }
